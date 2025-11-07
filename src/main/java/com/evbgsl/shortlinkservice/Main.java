@@ -2,6 +2,7 @@ package com.evbgsl.shortlinkservice;
 
 import com.evbgsl.shortlinkservice.service.*;
 import com.evbgsl.shortlinkservice.model.*;
+import com.evbgsl.shortlinkservice.util.AppConfig;
 import java.util.Scanner;
 
 public class Main {
@@ -11,10 +12,16 @@ public class Main {
         LinkService linkService = new LinkService();
         linkService.loadUserLinks(user);
 
+        CleanupService cleaner = new CleanupService();
+        cleaner.startPeriodic(user, linkService);
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("=== Сервис сокращения ссылок (UUID: " + user.getId() + ") ===");
 
         while (true) {
+            // Дополнительно чистим перед показом меню для предсказуемости
+            linkService.cleanupExpired(user);
+
             System.out.println("\nМеню:");
             System.out.println("1. Создать короткую ссылку");
             System.out.println("2. Показать мои ссылки");
