@@ -35,7 +35,12 @@
                 <version>2.30.0</version>
                 <configuration>
                     <java>
-                        <googleJavaFormat/>
+                        <eclipse>
+                            <!-- файл со стилем Eclipse, где выставлен indent = 4 -->
+                            <file>${basedir}/eclipse-java-style.xml</file>
+                        </eclipse>
+                        <removeUnusedImports/>
+                        <importOrder/>
                     </java>
                 </configuration>
                 <executions>

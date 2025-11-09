@@ -5,13 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.evbgsl.shortlinkservice.model.ShortLink;
 import com.evbgsl.shortlinkservice.model.User;
 import com.evbgsl.shortlinkservice.util.JsonStorage;
-
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.Duration;
 import java.util.Comparator;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.*;
 
 class LinkServiceTest {
@@ -39,14 +37,12 @@ class LinkServiceTest {
     void cleanup() {
         if (tempDir != null && Files.exists(tempDir)) {
             try (Stream<Path> stream = Files.walk(tempDir)) {
-                stream
-                        .sorted(Comparator.reverseOrder())
-                        .map(Path::toFile)
-                        .forEach(
-                                f -> {
-                                    if (!f.delete()) f.deleteOnExit();
-                                });
-            } catch (IOException e) {
+                stream.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(f -> {
+                    if (!f.delete())
+                        f.deleteOnExit();
+                });
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }

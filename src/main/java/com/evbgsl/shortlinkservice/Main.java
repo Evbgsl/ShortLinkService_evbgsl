@@ -3,7 +3,6 @@ package com.evbgsl.shortlinkservice;
 import com.evbgsl.shortlinkservice.model.*;
 import com.evbgsl.shortlinkservice.service.*;
 import com.evbgsl.shortlinkservice.util.AppConfig;
-
 import java.util.Scanner;
 
 public class Main {
@@ -28,8 +27,7 @@ public class Main {
             System.out.println("1. Создать короткую ссылку");
             System.out.println("2. Показать мои ссылки");
             System.out.println("3. Перейти по короткой ссылке");
-            System.out.println(
-                    "4. Очистить просроченные ссылки (ручная очистка, автоочистка каждые 60 секунд)");
+            System.out.println("4. Очистить просроченные ссылки (ручная очистка, автоочистка каждые 60 секунд)");
             System.out.println("5. Выход из программы");
             System.out.println("\n");
             System.out.print("Сделайте Ваш выбор (введите номер пункта меню): ");
@@ -39,7 +37,8 @@ public class Main {
             int choice;
             try {
                 choice = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите число от 1 до 5.");
                 continue;
             }
@@ -56,7 +55,8 @@ public class Main {
 
                     if (limitStr.isBlank()) {
                         maxVisits = AppConfig.maxVisits(); // подтягиваем из конфигурации
-                    } else {
+                    }
+                    else {
                         try {
                             maxVisits = Integer.parseInt(limitStr.trim());
                             if (maxVisits < 1) {
@@ -64,7 +64,8 @@ public class Main {
                                         "Лимит переходов должен быть ≥ 1. Используем значение по умолчанию - 10.");
                                 maxVisits = AppConfig.maxVisits();
                             }
-                        } catch (NumberFormatException e) {
+                        }
+                        catch (NumberFormatException e) {
                             System.out.println("Ошибка ввода. Используем значение по умолчанию - 10.");
                             maxVisits = AppConfig.maxVisits();
                         }
@@ -78,7 +79,8 @@ public class Main {
                     if (ttlStr.isBlank()) {
                         // пользователь не ввёл значение - берём из конфигурации
                         ttlMinutes = AppConfig.ttlMinutes();
-                    } else {
+                    }
+                    else {
                         try {
                             ttlMinutes = Long.parseLong(ttlStr.trim());
                             if (ttlMinutes < 1 || ttlMinutes > 300) {
@@ -86,7 +88,8 @@ public class Main {
                                         "TTL должен быть от 1 до 300 минут. Используем значение по умолчанию.");
                                 ttlMinutes = AppConfig.ttlMinutes();
                             }
-                        } catch (NumberFormatException e) {
+                        }
+                        catch (NumberFormatException e) {
                             System.out.println("Неверный ввод. Используем значение по умолчанию.");
                             ttlMinutes = AppConfig.ttlMinutes();
                         }
@@ -95,7 +98,8 @@ public class Main {
                     // создаём ссылку через метод LinkService
                     try {
                         linkService.createShortLinkWithNotification(url, user, maxVisits, ttlMinutes);
-                    } catch (IllegalArgumentException ex) {
+                    }
+                    catch (IllegalArgumentException ex) {
                         System.out.println("Ошибка: " + ex.getMessage());
                     }
                 }

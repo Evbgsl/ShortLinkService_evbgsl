@@ -3,7 +3,6 @@ package com.evbgsl.shortlinkservice.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Duration;
-
 import org.junit.jupiter.api.Test;
 
 public class ShortLinkTest {
