@@ -14,10 +14,8 @@ public class LinkService {
 
     private final NotificationService notifier = new NotificationService();
 
-    public void createShortLinkWithNotification(String originalUrl, User user, int maxVisits, long ttlMinutes) {
+    public String createShortLinkWithNotification(String originalUrl, User user, int maxVisits, long ttlMinutes) {
         long maxTtl = AppConfig.ttlMinutes(); // читаем максимум из конфигурации
-
-        // ограничиваем TTL от 1 до maxTtl
         ttlMinutes = Math.min(Math.max(ttlMinutes, 1), maxTtl);
 
         String code = LinkGenerator.generateCode();
@@ -25,9 +23,11 @@ public class LinkService {
         user.addLink(shortLink);
         JsonStorage.saveLinks(user.getId(), user.getLinks());
 
-        // уведомления о созданной ссылке
         notifier.info("Короткая ссылка создана! Код: " + code + " | Лимит переходов: " + maxVisits + " | TTL: " + ttlMinutes + " мин");
+
+        return code;
     }
+
 
     public void openLinkWithNotification(String code, User user) {
         Optional<ShortLink> linkOpt = user.getLinks().stream()
@@ -131,7 +131,7 @@ public class LinkService {
 
             String warningsText = warnings.isEmpty() ? "" : " " + warnings;
 
-            System.out.printf("[%s] Код: %s | URL: %s | Клики: %d/%d | Срок жизни (осталось): %s | Создана: %s | Истекает: %s%s%n",
+            System.out.printf("[%s] Код: %s | URL: %s | Совершенные переходы: %d/%d | Срок жизни (осталось): %s | Создана: %s | Истекает: %s%s%n",
                     status,
                     l.getShortCode(),
                     l.getOriginalUrl(),

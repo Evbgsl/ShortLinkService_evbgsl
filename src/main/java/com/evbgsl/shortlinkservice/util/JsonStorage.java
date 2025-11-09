@@ -8,6 +8,18 @@ import org.json.*;
 
 public class JsonStorage {
 
+    // В JsonStorage
+    private static Path BASE_DIR = Paths.get(""); // по умолчанию текущая папка
+
+    public static void setBaseDir(Path dir) {
+        BASE_DIR = dir;
+    }
+
+    private static Path getFilePath(UUID userId) {
+        return BASE_DIR.resolve("links_" + userId + ".json");
+    }
+
+
     public static void saveLinks(UUID userId, List<ShortLink> links) {
         JSONArray arr = new JSONArray();
         for (ShortLink l : links) {
@@ -21,7 +33,7 @@ public class JsonStorage {
             arr.put(obj);
         }
 
-        Path filePath = Paths.get("links_" + userId + ".json");
+        Path filePath = getFilePath(userId);
         try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
             writer.write(arr.toString(2)); // 2 — отступы для читаемости
         } catch (IOException e) {
@@ -30,7 +42,7 @@ public class JsonStorage {
     }
 
     public static List<ShortLink> loadLinks(UUID userId) {
-        Path filePath = Paths.get("links_" + userId + ".json");
+        Path filePath = getFilePath(userId);
         List<ShortLink> links = new ArrayList<>();
 
         if (!Files.exists(filePath))

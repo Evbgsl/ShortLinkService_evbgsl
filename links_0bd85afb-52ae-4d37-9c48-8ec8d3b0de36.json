@@ -2,7 +2,7 @@
   {
     "createdAt": "2025-11-09T16:52:52.200133200",
     "code": "3XbJBL",
-    "visitCount": 2,
+    "visitCount": 3,
     "maxClicks": 3,
     "lifetimeMinutes": 180,
     "url": "https://habr.com/ru/companies/testo_lang/articles/525326/"
@@ -14,5 +14,13 @@
     "maxClicks": 3,
     "lifetimeMinutes": 180,
     "url": "https://professorweb.ru/"
+  },
+  {
+    "createdAt": "2025-11-09T19:32:13.350036700",
+    "code": "7qYKl2",
+    "visitCount": 0,
+    "maxClicks": 5,
+    "lifetimeMinutes": 180,
+    "url": " ЇЁл ЇвлЇав"
   }
 ]
