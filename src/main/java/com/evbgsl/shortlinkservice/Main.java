@@ -1,7 +1,7 @@
 package com.evbgsl.shortlinkservice;
 
-import com.evbgsl.shortlinkservice.service.*;
 import com.evbgsl.shortlinkservice.model.*;
+import com.evbgsl.shortlinkservice.service.*;
 import com.evbgsl.shortlinkservice.util.AppConfig;
 import java.util.Scanner;
 
@@ -37,7 +37,8 @@ public class Main {
             int choice;
             try {
                 choice = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 System.out.println("Ошибка: введите число от 1 до 5.");
                 continue;
             }
@@ -54,34 +55,41 @@ public class Main {
 
                     if (limitStr.isBlank()) {
                         maxVisits = AppConfig.maxVisits(); // подтягиваем из конфигурации
-                    } else {
+                    }
+                    else {
                         try {
                             maxVisits = Integer.parseInt(limitStr.trim());
                             if (maxVisits < 1) {
-                                System.out.println("Лимит переходов должен быть ≥ 1. Используем значение по умолчанию - 10.");
+                                System.out.println(
+                                        "Лимит переходов должен быть ≥ 1. Используем значение по умолчанию - 10.");
                                 maxVisits = AppConfig.maxVisits();
                             }
-                        } catch (NumberFormatException e) {
+                        }
+                        catch (NumberFormatException e) {
                             System.out.println("Ошибка ввода. Используем значение по умолчанию - 10.");
                             maxVisits = AppConfig.maxVisits();
                         }
                     }
 
-                    System.out.print("Введите TTL в минутах (не более 300 минут, Enter для значения по умолчанию - 180 минут): ");
+                    System.out.print(
+                            "Введите TTL в минутах (не более 300 минут, Enter для значения по умолчанию - 180 минут): ");
                     String ttlStr = scanner.nextLine();
                     long ttlMinutes;
 
                     if (ttlStr.isBlank()) {
                         // пользователь не ввёл значение - берём из конфигурации
                         ttlMinutes = AppConfig.ttlMinutes();
-                    } else {
+                    }
+                    else {
                         try {
                             ttlMinutes = Long.parseLong(ttlStr.trim());
                             if (ttlMinutes < 1 || ttlMinutes > 300) {
-                                System.out.println("TTL должен быть от 1 до 300 минут. Используем значение по умолчанию.");
+                                System.out.println(
+                                        "TTL должен быть от 1 до 300 минут. Используем значение по умолчанию.");
                                 ttlMinutes = AppConfig.ttlMinutes();
                             }
-                        } catch (NumberFormatException e) {
+                        }
+                        catch (NumberFormatException e) {
                             System.out.println("Неверный ввод. Используем значение по умолчанию.");
                             ttlMinutes = AppConfig.ttlMinutes();
                         }
@@ -90,13 +98,15 @@ public class Main {
                     // создаём ссылку через метод LinkService
                     try {
                         linkService.createShortLinkWithNotification(url, user, maxVisits, ttlMinutes);
-                    } catch (IllegalArgumentException ex) {
+                    }
+                    catch (IllegalArgumentException ex) {
                         System.out.println("Ошибка: " + ex.getMessage());
                     }
                 }
                 case 2 -> linkService.listUserLinks(user);
                 case 3 -> {
-                    System.out.print("Введите короткий код (его можно скопировать из колонки Код в списке ваших ссылок (Ctrl + Ins)): ");
+                    System.out.print(
+                            "Введите короткий код (его можно скопировать из колонки Код в списке ваших ссылок (Ctrl + Ins)): ");
                     String code = scanner.nextLine();
                     linkService.openLinkWithNotification(code, user);
                 }

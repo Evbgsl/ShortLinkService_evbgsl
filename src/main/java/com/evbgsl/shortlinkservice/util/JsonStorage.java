@@ -19,7 +19,6 @@ public class JsonStorage {
         return BASE_DIR.resolve("links_" + userId + ".json");
     }
 
-
     public static void saveLinks(UUID userId, List<ShortLink> links) {
         JSONArray arr = new JSONArray();
         for (ShortLink l : links) {
@@ -36,7 +35,8 @@ public class JsonStorage {
         Path filePath = getFilePath(userId);
         try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
             writer.write(arr.toString(2)); // 2 — отступы для читаемости
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("Ошибка при сохранении ссылок: " + e.getMessage());
         }
     }
@@ -53,19 +53,16 @@ public class JsonStorage {
             JSONArray arr = new JSONArray(content);
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
-                ShortLink link = new ShortLink(
-                        o.getString("code"),
-                        o.getString("url"),
-                        o.getInt("maxClicks"),
-                        o.getLong("lifetimeMinutes")
-                );
+                ShortLink link = new ShortLink(o.getString("code"), o.getString("url"), o.getInt("maxClicks"),
+                        o.getLong("lifetimeMinutes"));
                 link.setCreatedAt(o.getString("createdAt"));
                 if (o.has("visitCount")) {
                     link.setVisitCount(o.getInt("visitCount"));
                 }
                 links.add(link);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("Ошибка при загрузке ссылок: " + e.getMessage());
         }
 

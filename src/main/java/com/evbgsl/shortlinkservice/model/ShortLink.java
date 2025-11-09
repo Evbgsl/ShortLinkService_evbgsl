@@ -12,7 +12,6 @@ public class ShortLink {
 
     public ShortLink(String shortCode, String originalUrl, int maxVisits, long lifetimeMinutes) {
 
-
         if (maxVisits < 1) {
             throw new IllegalArgumentException("Количество переходов должно быть >= 1");
         }
@@ -78,5 +77,4 @@ public class ShortLink {
     public Duration getRemaining() {
         return Duration.between(LocalDateTime.now(), getExpiresAt());
     }
-
 }

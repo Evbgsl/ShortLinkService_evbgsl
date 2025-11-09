@@ -1,7 +1,8 @@
 package com.evbgsl.shortlinkservice.model;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 class ShortLinkLimitTest {
 
@@ -23,11 +24,7 @@ class ShortLinkLimitTest {
 
     @Test
     void zeroOrNegativeLimitShouldBeRejected() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new ShortLink("X", "https://example.com", 0, 24)
-        );
-        assertThrows(IllegalArgumentException.class, () ->
-                new ShortLink("X", "https://example.com", -5, 24)
-        );
+        assertThrows(IllegalArgumentException.class, () -> new ShortLink("X", "https://example.com", 0, 24));
+        assertThrows(IllegalArgumentException.class, () -> new ShortLink("X", "https://example.com", -5, 24));
     }
 }

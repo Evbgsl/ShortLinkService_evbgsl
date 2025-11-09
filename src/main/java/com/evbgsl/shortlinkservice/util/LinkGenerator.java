@@ -1,6 +1,8 @@
 package com.evbgsl.shortlinkservice.util;
 
-import java.security.SecureRandom; // для генерации случайных чисел с криптозащитой, лучше обычного Random
+import java.security.SecureRandom;
+
+// Random
 
 public class LinkGenerator {
     private static final String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

@@ -1,7 +1,6 @@
 package com.evbgsl.shortlinkservice.service;
 
 import com.evbgsl.shortlinkservice.model.User;
-
 import java.io.*;
 import java.util.*;
 
@@ -26,7 +25,8 @@ public class UserService {
                     System.out.println("Ваш персональный идентификатор пользователя (UUID) загружен: " + id);
                     return new User(id);
                 }
-            } else {
+            }
+            else {
                 User newUser = new User();
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                     writer.write(newUser.getId().toString());
@@ -34,7 +34,8 @@ public class UserService {
                 System.out.println("Новый персональный идентификатор пользователя (UUID) создан: " + newUser.getId());
                 return newUser;
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("Ошибка при работе с файлом UUID: " + e.getMessage());
             return new User();
         }

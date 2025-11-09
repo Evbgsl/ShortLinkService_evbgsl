@@ -32,5 +32,4 @@ public class User {
     public void addLink(ShortLink link) {
         links.add(link);
     }
-
 }
