@@ -3,80 +3,78 @@ package com.evbgsl.shortlinkservice.model;
 import java.time.*;
 
 public class ShortLink {
-    private final String shortCode;
-    private final String originalUrl;
-    private final int maxVisits;
-    private final long lifetimeMinutes;
-    private LocalDateTime createdAt;
-    private int visitCount;
+  private final String shortCode;
+  private final String originalUrl;
+  private final int maxVisits;
+  private final long lifetimeMinutes;
+  private LocalDateTime createdAt;
+  private int visitCount;
 
-    public ShortLink(String shortCode, String originalUrl, int maxVisits, long lifetimeMinutes) {
+  public ShortLink(String shortCode, String originalUrl, int maxVisits, long lifetimeMinutes) {
 
-
-        if (maxVisits < 1) {
-            throw new IllegalArgumentException("Количество переходов должно быть >= 1");
-        }
-
-        this.shortCode = shortCode;
-        this.originalUrl = originalUrl;
-        this.maxVisits = maxVisits;
-        this.lifetimeMinutes = lifetimeMinutes;
-        this.createdAt = LocalDateTime.now();
-        this.visitCount = 0;
+    if (maxVisits < 1) {
+      throw new IllegalArgumentException("Количество переходов должно быть >= 1");
     }
 
-    public String getShortCode() {
-        return shortCode;
-    }
+    this.shortCode = shortCode;
+    this.originalUrl = originalUrl;
+    this.maxVisits = maxVisits;
+    this.lifetimeMinutes = lifetimeMinutes;
+    this.createdAt = LocalDateTime.now();
+    this.visitCount = 0;
+  }
 
-    public String getOriginalUrl() {
-        return originalUrl;
-    }
+  public String getShortCode() {
+    return shortCode;
+  }
 
-    public int getMaxVisits() {
-        return maxVisits;
-    }
+  public String getOriginalUrl() {
+    return originalUrl;
+  }
 
-    public long getLifetimeMinutes() {
-        return lifetimeMinutes;
-    }
+  public int getMaxVisits() {
+    return maxVisits;
+  }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+  public long getLifetimeMinutes() {
+    return lifetimeMinutes;
+  }
 
-    public int getVisitCount() {
-        return visitCount;
-    }
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
 
-    // Позволяет восстановить дату из JSON
-    public void setCreatedAt(String time) {
-        this.createdAt = LocalDateTime.parse(time);
-    }
+  public int getVisitCount() {
+    return visitCount;
+  }
 
-    public void incrementVisits() {
-        visitCount++;
-    }
+  // Позволяет восстановить дату из JSON
+  public void setCreatedAt(String time) {
+    this.createdAt = LocalDateTime.parse(time);
+  }
 
-    // --- Проверки ---
-    public boolean isExpired() {
-        return Duration.between(createdAt, LocalDateTime.now()).toMinutes() >= lifetimeMinutes;
-    }
+  public void incrementVisits() {
+    visitCount++;
+  }
 
-    public boolean isLimitReached() {
-        return visitCount >= maxVisits;
-    }
+  // --- Проверки ---
+  public boolean isExpired() {
+    return Duration.between(createdAt, LocalDateTime.now()).toMinutes() >= lifetimeMinutes;
+  }
 
-    public void setVisitCount(int count) {
-        this.visitCount = count;
-    }
+  public boolean isLimitReached() {
+    return visitCount >= maxVisits;
+  }
 
-    public LocalDateTime getExpiresAt() {
-        return createdAt.plusMinutes(lifetimeMinutes);
-    }
+  public void setVisitCount(int count) {
+    this.visitCount = count;
+  }
 
-    public Duration getRemaining() {
-        return Duration.between(LocalDateTime.now(), getExpiresAt());
-    }
+  public LocalDateTime getExpiresAt() {
+    return createdAt.plusMinutes(lifetimeMinutes);
+  }
 
+  public Duration getRemaining() {
+    return Duration.between(LocalDateTime.now(), getExpiresAt());
+  }
 }
