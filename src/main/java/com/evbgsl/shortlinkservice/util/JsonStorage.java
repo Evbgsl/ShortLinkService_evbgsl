@@ -16,7 +16,7 @@ public class JsonStorage {
             obj.put("url", l.getOriginalUrl());
             obj.put("maxClicks", l.getMaxVisits());
             obj.put("createdAt", l.getCreatedAt().toString());
-            obj.put("lifetimeHours", l.getLifetimeHours());
+            obj.put("lifetimeMinutes", l.getLifetimeMinutes());
             obj.put("visitCount", l.getVisitCount());
             arr.put(obj);
         }
@@ -45,11 +45,11 @@ public class JsonStorage {
                         o.getString("code"),
                         o.getString("url"),
                         o.getInt("maxClicks"),
-                        o.getLong("lifetimeHours")
+                        o.getLong("lifetimeMinutes")
                 );
                 link.setCreatedAt(o.getString("createdAt"));
                 if (o.has("visitCount")) {
-                    link.setVisitCount(o.getInt("visitCount")); // ✅ добавили
+                    link.setVisitCount(o.getInt("visitCount"));
                 }
                 links.add(link);
             }

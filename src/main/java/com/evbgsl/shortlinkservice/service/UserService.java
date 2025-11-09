@@ -23,7 +23,7 @@ public class UserService {
                 try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                     String uuidStr = reader.readLine();
                     UUID id = UUID.fromString(uuidStr);
-                    System.out.println("Ваш UUID загружен: " + id);
+                    System.out.println("Ваш персональный идентификатор пользователя (UUID) загружен: " + id);
                     return new User(id);
                 }
             } else {
@@ -31,7 +31,7 @@ public class UserService {
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                     writer.write(newUser.getId().toString());
                 }
-                System.out.println("Новый UUID создан: " + newUser.getId());
+                System.out.println("Новый персональный идентификатор пользователя (UUID) создан: " + newUser.getId());
                 return newUser;
             }
         } catch (IOException e) {
