@@ -25,12 +25,29 @@ public class ShortLink {
         this.visitCount = 0;
     }
 
-    public String getShortCode() { return shortCode; }
-    public String getOriginalUrl() { return originalUrl; }
-    public int getMaxVisits() { return maxVisits; }
-    public long getLifetimeHours() { return lifetimeHours; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public int getVisitCount() {return visitCount; }
+    public String getShortCode() {
+        return shortCode;
+    }
+
+    public String getOriginalUrl() {
+        return originalUrl;
+    }
+
+    public int getMaxVisits() {
+        return maxVisits;
+    }
+
+    public long getLifetimeHours() {
+        return lifetimeHours;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public int getVisitCount() {
+        return visitCount;
+    }
 
 
     // Позволяет восстановить дату из JSON
@@ -44,7 +61,7 @@ public class ShortLink {
 
     // --- Проверки ---
     public boolean isExpired() {
-        return Duration.between(createdAt, LocalDateTime.now()).toHours() >= lifetimeHours;
+        return Duration.between(createdAt, LocalDateTime.now()).toMinutes() >= lifetimeHours;
     }
 
     public boolean isLimitReached() {
@@ -53,6 +70,14 @@ public class ShortLink {
 
     public void setVisitCount(int count) {
         this.visitCount = count;
+    }
+
+    public LocalDateTime getExpiresAt() {
+        return createdAt.plusHours(lifetimeHours);
+    }
+
+    public Duration getRemaining() {
+        return Duration.between(LocalDateTime.now(), getExpiresAt());
     }
 
 }

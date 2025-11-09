@@ -5,7 +5,7 @@ import com.evbgsl.shortlinkservice.util.*;
 
 import java.awt.*;
 import java.net.URI;
-//import java.time.Duration;
+import java.time.Duration;
 import java.util.*;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class LinkService {
         List<ShortLink> loaded = JsonStorage.loadLinks(user.getId());
         user.getLinks().addAll(loaded);
         if (!loaded.isEmpty())
-            System.out.println("🔁 Загружено ссылок: " + loaded.size());
+            System.out.println("Загружено ссылок: " + loaded.size());
     }
 
     public String createShortLink(String originalUrl, User user, int maxVisits) {
@@ -46,18 +46,24 @@ public class LinkService {
             System.out.println("У вас пока нет созданных ссылок.");
             return;
         }
-        System.out.println("\nВаши ссылки:");
-        user.getLinks().forEach(l ->
-                System.out.printf("Код: %s | URL: %s | Клики: %d/%d | Создана: %s%n",
-                        l.getShortCode(),
-                        l.getOriginalUrl(),
-                        l.getVisitCount(),
-                        l.getMaxVisits(),
-                        l.getCreatedAt())
-        );
+        System.out.println("Ваши ссылки:");
+        user.getLinks().forEach(l -> {
+            String status = l.isLimitReached() ? "limit" : (l.isExpired() ? "ttl" : "ok");
+            Duration left = l.getRemaining();
+            String leftText = l.isExpired() ? "0ч" : (left.toHours() + "ч");
+            System.out.printf("[%s] Код: %s | URL: %s | Клики: %d/%d | TTL осталось: %s | Создана: %s | Истекает: %s%n",
+                    status,
+                    l.getShortCode(),
+                    l.getOriginalUrl(),
+                    l.getVisitCount(),
+                    l.getMaxVisits(),
+                    leftText,
+                    l.getCreatedAt(),
+                    l.getExpiresAt());
+        });
     }
 
-    // ✅ переход по короткому коду
+    // переход по короткому коду
     public void openLink(String code, User user) {
         Optional<ShortLink> linkOpt = user.getLinks().stream()
                 .filter(l -> l.getShortCode().equals(code))
