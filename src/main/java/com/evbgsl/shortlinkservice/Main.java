@@ -21,7 +21,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            // День 7: чистка перед меню через новый метод с уведомлением
             linkService.cleanupExpiredWithNotification(user);
 
             System.out.println("\nМеню:");
@@ -31,7 +30,7 @@ public class Main {
             System.out.println("4. Очистить просроченные ссылки (ручная очистка, автоочистка каждые 60 секунд)");
             System.out.println("5. Выход из программы");
             System.out.println("\n");
-            System.out.print("Сделайте Ваш выбор (введите номер пунктя меню): ");
+            System.out.print("Сделайте Ваш выбор (введите номер пункта меню): ");
 
             String input = scanner.nextLine();
 
