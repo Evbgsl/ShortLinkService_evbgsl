@@ -7,6 +7,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("\n");
+        System.out.println("=== Сервис сокращения ссылок ===");
+
         UserService userService = new UserService();
         User user = userService.getCurrentUser();
         LinkService linkService = new LinkService();
@@ -16,23 +19,22 @@ public class Main {
         cleaner.startPeriodic(user, linkService);
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Сервис сокращения ссылок (UUID: " + user.getId() + ") ===");
 
         while (true) {
-            // Дополнительно чистим перед показом меню для предсказуемости
-            linkService.cleanupExpired(user);
+            // День 7: чистка перед меню через новый метод с уведомлением
+            linkService.cleanupExpiredWithNotification(user);
 
             System.out.println("\nМеню:");
             System.out.println("1. Создать короткую ссылку");
             System.out.println("2. Показать мои ссылки");
-            System.out.println("3. Перейти по короткому коду");
-            System.out.println("4. Очистить просроченные ссылки");
-            System.out.println("5. Выход");
-            System.out.print("Ваш выбор: ");
+            System.out.println("3. Перейти по короткой ссылке");
+            System.out.println("4. Очистить просроченные ссылки (ручная очистка, автоочистка каждые 60 секунд)");
+            System.out.println("5. Выход из программы");
+            System.out.println("\n");
+            System.out.print("Сделайте Ваш выбор (введите номер пунктя меню): ");
 
-            String input = scanner.nextLine(); // ← читаем строку вместо числа
+            String input = scanner.nextLine();
 
-            // пробуем преобразовать в число
             int choice;
             try {
                 choice = Integer.parseInt(input);
@@ -46,38 +48,63 @@ public class Main {
                     System.out.print("Введите оригинальный URL: ");
                     String url = scanner.nextLine();
 
-                    System.out.print("Введите лимит переходов (целое число ≥ 1):");
+                    System.out.print("Введите лимит переходов по ссылке (целое число от 1 до 10): ");
                     String limitStr = scanner.nextLine();
+
                     int maxVisits;
 
-                    try {
-                        maxVisits = Integer.parseInt(limitStr.trim());
-                        if (maxVisits < 1) {
-                            System.out.println("Лимит должен быть ≥ 1.");
-                            break;
+                    if (limitStr.isBlank()) {
+                        maxVisits = AppConfig.maxVisits(); // подтягиваем из конфигурации
+                    } else {
+                        try {
+                            maxVisits = Integer.parseInt(limitStr.trim());
+                            if (maxVisits < 1) {
+                                System.out.println("Лимит переходов должен быть ≥ 1. Используем значение по умолчанию - 10.");
+                                maxVisits = AppConfig.maxVisits();
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Ошибка ввода. Используем значение по умолчанию - 10.");
+                            maxVisits = AppConfig.maxVisits();
                         }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Введите целое число, например 5.");
-                        break;
                     }
 
+                    System.out.print("Введите TTL в минутах (не более 300 минут, Enter для значения по умолчанию - 180 минут): ");
+                    String ttlStr = scanner.nextLine();
+                    long ttlMinutes;
+
+                    if (ttlStr.isBlank()) {
+                        // пользователь не ввёл значение - берём из конфигурации
+                        ttlMinutes = AppConfig.ttlMinutes();
+                    } else {
+                        try {
+                            ttlMinutes = Long.parseLong(ttlStr.trim());
+                            if (ttlMinutes < 1 || ttlMinutes > 300) {
+                                System.out.println("TTL должен быть от 1 до 300 минут. Используем значение по умолчанию.");
+                                ttlMinutes = AppConfig.ttlMinutes();
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Неверный ввод. Используем значение по умолчанию.");
+                            ttlMinutes = AppConfig.ttlMinutes();
+                        }
+                    }
+
+                    // создаём ссылку через метод LinkService
                     try {
-                        String code = linkService.createShortLink(url, user, maxVisits);
-                        System.out.println("Короткая ссылка создана!");
-                        System.out.println("Код: " + code + " | Лимит: " + maxVisits);
+                        linkService.createShortLinkWithNotification(url, user, maxVisits, ttlMinutes);
                     } catch (IllegalArgumentException ex) {
                         System.out.println("Ошибка: " + ex.getMessage());
                     }
                 }
                 case 2 -> linkService.listUserLinks(user);
                 case 3 -> {
-                    System.out.print("Введите короткий код: ");
+                    System.out.print("Введите короткий код (его можно скопировать из колонки Код в списке ваших ссылок (Ctrl + Ins)): ");
                     String code = scanner.nextLine();
-                    linkService.openLink(code, user);
+                    linkService.openLinkWithNotification(code, user);
                 }
-                case 4 -> linkService.cleanupExpired(user);
+                case 4 -> linkService.cleanupExpiredWithNotification(user);
                 case 5 -> {
                     System.out.println("Выход из программы...");
+                    cleaner.shutdown();
                     return;
                 }
                 default -> System.out.println("Неверный выбор, попробуйте снова.");

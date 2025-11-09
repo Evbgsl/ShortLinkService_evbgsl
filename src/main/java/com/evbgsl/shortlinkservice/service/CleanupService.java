@@ -15,7 +15,7 @@ public class CleanupService {
 // каждые 60 секунд пробуем очистить «протухшие» ссылки
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                linkService.cleanupExpired(user);
+                linkService.cleanupExpiredWithNotification(user);
             } catch (Throwable t) {
                 System.err.println("Ошибка в планировщике очистки: " + t.getMessage());
             }

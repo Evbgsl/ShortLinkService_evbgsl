@@ -6,11 +6,11 @@ public class ShortLink {
     private final String shortCode;
     private final String originalUrl;
     private final int maxVisits;
-    private final long lifetimeHours;
+    private final long lifetimeMinutes;
     private LocalDateTime createdAt;
     private int visitCount;
 
-    public ShortLink(String shortCode, String originalUrl, int maxVisits, long lifetimeHours) {
+    public ShortLink(String shortCode, String originalUrl, int maxVisits, long lifetimeMinutes) {
 
 
         if (maxVisits < 1) {
@@ -20,7 +20,7 @@ public class ShortLink {
         this.shortCode = shortCode;
         this.originalUrl = originalUrl;
         this.maxVisits = maxVisits;
-        this.lifetimeHours = lifetimeHours;
+        this.lifetimeMinutes = lifetimeMinutes;
         this.createdAt = LocalDateTime.now();
         this.visitCount = 0;
     }
@@ -37,8 +37,8 @@ public class ShortLink {
         return maxVisits;
     }
 
-    public long getLifetimeHours() {
-        return lifetimeHours;
+    public long getLifetimeMinutes() {
+        return lifetimeMinutes;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -48,7 +48,6 @@ public class ShortLink {
     public int getVisitCount() {
         return visitCount;
     }
-
 
     // Позволяет восстановить дату из JSON
     public void setCreatedAt(String time) {
@@ -61,7 +60,7 @@ public class ShortLink {
 
     // --- Проверки ---
     public boolean isExpired() {
-        return Duration.between(createdAt, LocalDateTime.now()).toMinutes() >= lifetimeHours;
+        return Duration.between(createdAt, LocalDateTime.now()).toMinutes() >= lifetimeMinutes;
     }
 
     public boolean isLimitReached() {
@@ -73,7 +72,7 @@ public class ShortLink {
     }
 
     public LocalDateTime getExpiresAt() {
-        return createdAt.plusHours(lifetimeHours);
+        return createdAt.plusMinutes(lifetimeMinutes);
     }
 
     public Duration getRemaining() {

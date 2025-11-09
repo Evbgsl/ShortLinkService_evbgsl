@@ -1,18 +1,18 @@
 [
   {
-    "createdAt": "2025-11-07T20:12:48.722825900",
-    "code": "eIATvF",
-    "lifetimeHours": 24,
-    "visitCount": 1,
-    "maxClicks": 2,
-    "url": "https://github.com/Evbgsl/ShortLinkService_evbgsl"
+    "createdAt": "2025-11-09T16:52:52.200133200",
+    "code": "3XbJBL",
+    "visitCount": 2,
+    "maxClicks": 3,
+    "lifetimeMinutes": 180,
+    "url": "https://habr.com/ru/companies/testo_lang/articles/525326/"
   },
   {
-    "createdAt": "2025-11-07T20:13:40.423748900",
-    "code": "83fjW8",
-    "lifetimeHours": 24,
-    "visitCount": 0,
-    "maxClicks": 2,
-    "url": "123123"
+    "createdAt": "2025-11-09T17:07:35.302348600",
+    "code": "4DZZsa",
+    "visitCount": 1,
+    "maxClicks": 3,
+    "lifetimeMinutes": 180,
+    "url": "https://professorweb.ru/"
   }
 ]
